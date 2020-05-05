@@ -1,0 +1,275 @@
+[colors]
+green = #116c42 
+
+[bar/center]
+; Use either of the following command to list available outputs:
+; If unspecified, the application will pick the first one it finds.
+; $ polybar -m | cut -d ':' -f 1
+; $ xrandr -q | grep " connected" | cut -d ' ' -f1
+ monitor = VGA-1
+
+; Use the specified monitor as a fallback if the main one is not found.
+; monitor-fallback =
+
+; Require the monitor to be in connected state
+; XRandR sometimes reports my monitor as being disconnected (when in use)
+; monitor-strict = false
+
+; Tell the Window Manager not to configure the window.
+; Use this to detach the bar if your WM is locking its size/position.
+; Note: With this most WMs will no longer reserve space for
+; the bar and it will overlap other windows. You need to configure
+; your WM to add a gap where the bar will be placed.
+override-redirect = true
+
+; Put the bar at the bottom of the screen
+bottom = false
+
+; Prefer fixed center position for the `modules-center` block
+; When false, the center position will be based on the size of the other blocks.
+fixed-center = true
+
+; Dimension defined as pixel value (e.g. 35) or percentage (e.g. 50%),
+; the percentage can optionally be extended with a pixel offset like so:
+; 50%:-10, this will result in a width or height of 50% minus 10 pixels
+width = 18%
+height = 30
+
+; Offset defined as pixel value (e.g. 35) or percentage (e.g. 50%)
+; the percentage can optionally be extended with a pixel offset like so:
+; 50%:-10, this will result in an offset in the x or y direction
+; of 50% minus 10 pixels
+offset-x = 41%
+offset-y = 14
+
+; Background ARGB color (e.g. #f00, #ff992a, #ddff1023)
+background = #116c42
+
+; Foreground ARGB color (e.g. #f00, #ff992a, #ddff1023)
+foreground = #700
+
+line-size = 0
+line-color = #fff
+
+padding-right = 3
+
+module-margin = 1
+
+font-0 = Iosevka NF:medium:size=7;3
+font-1 = Iosevka NF:medium:size=17;5
+font-2 = Iosevka NF:medium:size=11;4
+
+modules-left = 
+modules-center = i3
+modules-right = 
+
+; The separator will be inserted between the output of each module
+separator =
+spacing = 0
+
+dim-value = 1.0
+
+wm-name = i3
+
+tray-position = none
+wm-restack = i3
+
+dpi-x = 135
+dpi-y = 135
+
+; Enable support for inter-process messaging
+; See the Messaging wiki page for more details.
+enable-ipc = false
+
+[bar/left]
+inherit = bar/center
+offset-x = 14
+width = 25%
+module-margin = 0
+modules-left = mpdcontrol mpd
+modules-center = 
+
+[bar/rightdate]
+inherit = bar/center
+offset-x = 88%:-14
+width = 12%
+module-margin = 0
+modules-left = calicon date
+modules-center =
+modules-right = 
+
+
+[module/i3]
+type = internal/i3
+
+pin-workspaces = true
+
+; This will split the workspace name on ':'
+; Default: false
+strip-wsnumbers = true
+
+; Sort the workspaces by index instead of the default
+; sorting that groups the workspaces by output
+; Default: false
+index-sort = true
+
+; Create click handler used to focus workspace
+; Default: true
+enable-click = true
+
+; Create scroll handlers used to cycle workspaces
+; Default: true
+enable-scroll = true
+
+; Wrap around when reaching the first/last workspace
+; Default: true
+wrapping-scroll = false
+
+; Set the scroll cycle direction
+; Default: true
+reverse-scroll = false
+
+label-unfocused = %{T2}%{T-}
+label-unfocused-padding = 1
+label-unfocused-foreground = ${xrdb:color1}
+label-unfocused-background = ${colors.green}
+
+label-focused = %{T2}%{T-}
+label-focused-foreground = ${colors.green}
+label-focused-background = ${xrdb:color1}
+label-focused-underline = #f92672
+label-focused-padding = 1
+
+[module/calicon]
+type = custom/text
+content = %{T2}%{T-}
+content-background = ${xrdb:color1}
+content-foreground = ${colors.green}
+content-padding = 1
+
+[module/date]
+type = internal/date
+
+; Seconds to sleep between updates
+interval = 1.0
+
+; See "http://en.cppreference.com/w/cpp/io/manip/put_time" for details on how to format the date string
+; NOTE: if you want to use syntax tags here you need to use %%{...}
+date =  %D | 
+
+; Optional time format
+time = %R
+
+; if `date-alt` or `time-alt` is defined, clicking
+; the module will toggle between formats
+date-alt = %A, %d %B %Y
+time-alt = %H:%M:%S
+
+label = %date% %time%
+label-font = 0
+label-padding = 1
+label-foreground = ${xrdb:color1}
+
+[module/cpu]
+type = internal/cpu
+
+; Seconds to sleep between updates
+; Default: 1
+interval = 0.5
+
+label = %{T2}  %percentage:2%%
+
+label-foreground = ${xrdb:color1} 
+
+[module/memory]
+type = internal/memory
+
+; Seconds to sleep between updates
+; Default: 1
+interval = 0.5
+format = <label>
+
+; Available tokens:
+;   %percentage_used% (default)
+;   %percentage_free%
+;   %gb_used%
+;   %gb_free%
+;   %gb_total%
+;   %mb_used%
+;   %mb_free%
+;   %mb_total%
+;   %percentage_swap_used%
+;   %percentage_swap_free%
+;   %mb_swap_total%
+;   %mb_swap_free%
+;   %mb_swap_used%
+;   %gb_swap_total%
+;   %gb_swap_free%
+;   %gb_swap_used%
+
+label = %{T2}  %gb_used%
+
+label-foreground = ${xrdb:color1}
+
+[module/mpd]
+type = internal/mpd
+
+host = 0.0.0.0
+port = 6600
+
+interval = 2
+
+format-online = <label-song>
+format-online-background = ${colors.green}
+format-online-foreground = ${xrdb:color1}
+format-online-padding = 2
+
+label-song =  "%{T5}%artist% - %title%"
+label-song-maxlen = 40
+label-song-ellipsis = true
+
+label-offline = "MPD is offline"
+
+[module/mpdcontrol]
+type = internal/mpd
+padding = 0
+interval = 2
+
+format-online =  <icon-prev>  <toggle>  <icon-next> 
+format-online-background = ${xrdb:color1}
+format-online-foreground = ${colors.green}
+
+format-online-padding = 2
+
+label-offline = "MPD is offline"
+
+; Only applies if <icon-X> is used
+icon-play = %{T3}契
+icon-pause = %{T3}
+icon-stop = %{T3}栗
+icon-prev = %{T3}玲
+icon-next = %{T3}怜
+
+
+;                          /|_
+;               ........  /   |_ ........
+;             .........../     /............
+;           ............/      >..............
+;         .............(      >................
+;        ............./      /..................
+;       ............./     /.....................
+;       ............/      /.....................
+;       .........__/      \_____.................
+;        ......./'             |................
+;         ......./     /-\     /...............
+;          ...../      /  \--/................
+;           .../     /.......................
+;             /      /.....................
+;            (      >....................
+;           /      >...................
+;          /     _| .................
+;         /  __/      .............
+;        /_/            .........
+;                         .....
+;                          ...
+;                           .

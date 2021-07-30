@@ -22,7 +22,7 @@ yay -S i3-gaps polybar picom pywal rofi dmenu
 ### Clone this repo
 
 ```
-git clone --depth 1 https://github.com/snehitsah/green-candy-i3wm-theme.git
+git clone --depth 1 https://github.com/flyingcakes85/green-candy-i3wm-theme.git
 ```
 
 ### Copy the files
